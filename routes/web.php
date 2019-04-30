@@ -14,3 +14,29 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+$router->get('/auth', function(){
+    $user =new stdClass;
+    $user->name = "Captain";
+    return $user;
+});
+
+$router->get("/vessels", function(){
+    $v = new stdClass;
+    $vessels = [];
+    return $vessels;
+});
+
+$router->get('/vessels/{id}', function($id){
+    return 'Vessel '.$id;
+});
+
+$router->get('/certificates', function(){
+    $c = new stdClass;
+    $certificates = [];
+    return $certificates;
+});
+
+$router->get('/certificates/{id}', function($id){
+    return 'Certificate '.$id;
+});

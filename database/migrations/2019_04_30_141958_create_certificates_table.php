@@ -18,13 +18,16 @@ class CreateCertificatesTable extends Migration
             $table->bigInteger('vessel_id');
             $table->string('group');
             $table->string('name');
-            $table->string('description');
-            $table->date('issue');
-            $table->date('expiry');
-            $table->string('renewals');
-            $table->string('next_renewal');
+            $table->string('description')->nullable();;
+            $table->date('issue')->nullable();;
+            $table->date('expiry')->nullable();;
+            $table->string('renewals')->nullable();;
+            $table->string('next_renewal')->nullable();;
             $table->timestamps();
+
+            $table->foreign('vessel_id')->references('id')->on('vessels');
         });
+
     }
 
     /**

@@ -1,6 +1,7 @@
 <?php
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,27 +13,31 @@ use Illuminate\Http\Request;
 | and give it the Closure to call when that URI is requested.
 |
 */
-$router->group(['prefix' => 'api/', 'middleware' => 'auth'], function () use ($router) {
-
-    $router->get('users', function(Request $request){
-        $users = DB::table('users')->get();
-        return $users;
-    });
-
-});
 
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-$router->post('/auth', function(Request $request){
+$router->post('/api/auth', function(Request $request){
     $user = DB::table('users')->where('token', $request->input('token'))->first();
-    return $user;
+    if(empty($user)){
+        return response()->json(['status' => 'fail'],401);
+    }
+    return "Bearer " + $user->token;
 });
 
-$router->get('user', function(Request $request){
-    $users = DB::table('users')->get();
-    return $users;
+$router->group(['prefix' => 'api/', 'middleware' => 'auth'], function () use ($router) {
+
+
+    $router->get('user', function(Request $request){
+        return Auth::user();
+    });
+    
+    $router->get('users', function(Request $request){
+        $users = DB::table('users')->get();
+        return $users;
+    });
+
 });
 
 

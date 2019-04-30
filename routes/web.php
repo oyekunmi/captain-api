@@ -1,4 +1,6 @@
 <?php
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -10,33 +12,46 @@
 | and give it the Closure to call when that URI is requested.
 |
 */
+$router->group(['prefix' => 'api/', 'middleware' => 'auth'], function () use ($router) {
+
+    $router->get('users', function(Request $request){
+        $users = DB::table('users')->get();
+        return $users;
+    });
+
+});
 
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-$router->get('/auth', function(){
-    $user =new stdClass;
-    $user->name = "Captain";
+$router->post('/auth', function(Request $request){
+    $user = DB::table('users')->where('token', $request->input('token'))->first();
     return $user;
 });
 
-$router->get("/vessels", function(){
-    $v = new stdClass;
-    $vessels = [];
-    return $vessels;
+$router->get('user', function(Request $request){
+    $users = DB::table('users')->get();
+    return $users;
 });
 
-$router->get('/vessels/{id}', function($id){
-    return 'Vessel '.$id;
-});
 
-$router->get('/certificates', function(){
-    $c = new stdClass;
-    $certificates = [];
-    return $certificates;
-});
+$router->get("/vessels", ['middleware' => 'auth', function(Request $request){
+    return DB::table('vessels')->get();
+}]);
 
-$router->get('/certificates/{id}', function($id){
-    return 'Certificate '.$id;
-});
+$router->get("/vessels/{user_id}", ['middleware' => 'auth', function(Request $request, $user_id){
+    return DB::table('vessels')->where('user_id', $user_id)->get();
+}]);
+
+// $router->get('/vessels/{id}', ['middleware' => 'auth', function(Request $request, $id){
+//     return DB::table('vessels')->find($id);
+// }]);
+
+$router->get('/certificates', ['middleware' => 'auth', function(Request $request){
+    return DB::table('certificates')->get();
+}]);
+
+$router->get('/certificates/{id}', ['middleware' => 'auth', function(Request $id){
+    return DB::table('certificates')->find($id);
+}]);

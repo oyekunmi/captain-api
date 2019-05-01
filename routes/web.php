@@ -19,7 +19,6 @@ $router->get('/', function () use ($router) {
 });
 
 $router->post('/api/auth', function(Request $request){
-
     if ($request->header('Authorization')) {
         $key = explode(' ',$request->header('Authorization'));
         $user = User::where('token', $key[1])->first();
@@ -29,21 +28,22 @@ $router->post('/api/auth', function(Request $request){
         }
 
     }
-
     return response()->json(['status' => 'fail'],401);
-
 });
 
 $router->group(['prefix' => 'api/', 'middleware' => 'auth'], function () use ($router) {
-
-
+    
     $router->get('user', function(Request $request){
         return Auth::user();
     });
-    
+
     $router->get('users', function(Request $request){
         $users = DB::table('users')->get();
         return $users;
+    });
+
+    $router->get('certificates/expiring', function(Request $request){
+        return DB::table('certificates')->get();
     });
 
     $router->get('/certificates/{id}', function(Request $request, Int $id){
@@ -54,7 +54,6 @@ $router->group(['prefix' => 'api/', 'middleware' => 'auth'], function () use ($r
     $router->get('certificates', function(Request $request){
         return DB::table('certificates')->get();
     });
-
 
 });
 

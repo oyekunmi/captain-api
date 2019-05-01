@@ -2,7 +2,7 @@
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use App\User;
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -19,11 +19,19 @@ $router->get('/', function () use ($router) {
 });
 
 $router->post('/api/auth', function(Request $request){
-    $user = DB::table('users')->where('token', $request->input('token'))->first();
-    if(empty($user)){
-        return response()->json(['status' => 'fail'],401);
+
+    if ($request->header('Authorization')) {
+        $key = explode(' ',$request->header('Authorization'));
+        $user = User::where('token', $key[1])->first();
+    
+        if(!empty($user)){
+            return "Bearer ".$user->token;
+        }
+
     }
-    return "Bearer " + $user->token;
+
+    return response()->json(['status' => 'fail'],401);
+
 });
 
 $router->group(['prefix' => 'api/', 'middleware' => 'auth'], function () use ($router) {

@@ -46,25 +46,28 @@ $router->group(['prefix' => 'api/', 'middleware' => 'auth'], function () use ($r
         return $users;
     });
 
+    $router->get('/certificates/{id}', function(Request $request, Int $id){
+        $c=  DB::table('certificates')->find($id);
+        return response()->json($c);
+    });
+    
+    $router->get('certificates', function(Request $request){
+        return DB::table('certificates')->get();
+    });
+
+
 });
 
 
-$router->get("/vessels", ['middleware' => 'auth', function(Request $request){
-    return DB::table('vessels')->get();
-}]);
 
-$router->get("/vessels/{user_id}", ['middleware' => 'auth', function(Request $request, $user_id){
-    return DB::table('vessels')->where('user_id', $user_id)->get();
-}]);
+// $router->get("/vessels", ['middleware' => 'auth', function(Request $request){
+//     return DB::table('vessels')->get();
+// }]);    
 
-// $router->get('/vessels/{id}', ['middleware' => 'auth', function(Request $request, $id){
-//     return DB::table('vessels')->find($id);
+// $router->get("/vessels/{user_id}", ['middleware' => 'auth', function(Request $request, $user_id){
+//     return DB::table('vessels')->where('user_id', $user_id)->get();
 // }]);
 
-$router->get('/certificates', ['middleware' => 'auth', function(Request $request){
-    return DB::table('certificates')->get();
-}]);
-
-$router->get('/certificates/{id}', ['middleware' => 'auth', function(Request $id){
-    return DB::table('certificates')->find($id);
-}]);
+// // $router->get('/vessels/{id}', ['middleware' => 'auth', function(Request $request, $id){
+// //     return DB::table('vessels')->find($id);
+// // }]);

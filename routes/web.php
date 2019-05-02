@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -42,8 +43,8 @@ $router->group(['prefix' => 'api/', 'middleware' => 'auth'], function () use ($r
         return $users;
     });
 
-    $router->get('certificates/expiring', function(Request $request){
-        return DB::table('certificates')->get();
+    $router->get('certificates/state/{state}', function(Request $request, String $state){
+        return DB::table('certificates')->where('state', strtoupper($state))->get();
     });
 
     $router->get('/certificates/{id}', function(Request $request, Int $id){

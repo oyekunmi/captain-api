@@ -4,16 +4,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It is a breeze. Simply tell Lumen the URIs it should respond to
-| and give it the Closure to call when that URI is requested.
-|
-*/
 
 $router->get('/', function () use ($router) {
     return $router->app->version();
@@ -27,7 +17,6 @@ $router->post('/api/auth', function(Request $request){
         if(!empty($user)){
             return "Bearer ".$user->token;
         }
-
     }
     return response()->json(['status' => 'fail'],401);
 });
@@ -57,8 +46,6 @@ $router->group(['prefix' => 'api/', 'middleware' => 'auth'], function () use ($r
     });
 
 });
-
-
 
 // $router->get("/vessels", ['middleware' => 'auth', function(Request $request){
 //     return DB::table('vessels')->get();

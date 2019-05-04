@@ -46,7 +46,8 @@ class UpdateStateCommand extends Command{
         // ->whereIn('state', ['HEALTHY', 'EXPIRING'])
         ->chunkById(10, function($items){
           foreach($items as $item){
-            $this->process($item);
+            if($this->isValidItem($item)) 
+              $this->process($item);
           }
         });
     }
@@ -54,10 +55,11 @@ class UpdateStateCommand extends Command{
 
     private function process($item){
       
+      $item = $this->tweakPermanentItems($item);
+
       $future = Carbon::today()->add('3', 'month');
       $expiry = Carbon::createFromFormat('Y-m-d', $item->expiry);
-
-      $monthsToExpiry = Carbon::now()->diffInMonths($expiry, false);
+      $monthsToExpiry = Carbon::today()->diffInMonths($expiry, false);
 
       if($monthsToExpiry >= 0 && $monthsToExpiry < 3){
         $this->moveToState($item, 'EXPIRING');
@@ -77,6 +79,21 @@ class UpdateStateCommand extends Command{
       DB::table($this->tableName)
         ->where('id', $item->id)
         ->update(['state'=> $nextState]);
+    }
+
+    private function isValidItem($item){
+      return  
+        (is_null($item->expiry) && $item->renewals == 'permanent') ||
+        !is_null($item->expiry);
+    }
+
+    private function tweakPermanentItems($item){
+      if($item->renewals != 'permanent')
+        return $item;
+
+      $item->expiry = Carbon::today()->addYears(5)->toDateString();
+
+      return $item;
     }
 
 }

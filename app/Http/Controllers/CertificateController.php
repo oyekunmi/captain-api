@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Certificate;
+use App\Vessel;
 
 class CertificateController extends Controller
 {
@@ -50,6 +51,27 @@ class CertificateController extends Controller
         return Certificate::where('state', strtoupper($state))->get();
     }
 
+    /**
+     * Retrieve the certificate for the given ID.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function byVessel(Request $request, Int $id)
+    {
+        return Vessel::find($id)->certificates;
+    }
+
+    /**
+     * Retrieve the certificate for the given ID.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function byVesselAndState(Request $request, Int $id, String $state)
+    {
+        return Vessel::find($id)->certificates()->where('state', strtoupper($state))->get();
+    }
 
     
 }

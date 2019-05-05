@@ -25,9 +25,14 @@ $router->group(['prefix' => 'api/', 'middleware' => 'auth'], function () use ($r
     $router->get('user', function(Request $request){
         return Auth::user();
     });
+    $router->get('vessels/{id}/certificates/{state}/state', 'CertificateController@byVesselAndState');
+    $router->get('vessels/{id}/certificates', 'CertificateController@byVessel');
     $router->get('certificates/{state}/state', 'CertificateController@state');
     $router->get('certificates/{id}', 'CertificateController@show');
     $router->get('certificates', 'CertificateController@index');
+    $router->get('vessels/{id}', 'VesselController@show');
+    $router->get('vessels', 'VesselController@index');
+
 });
 
 // $router->get('certificates', function(Request $request){

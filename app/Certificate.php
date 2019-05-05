@@ -22,6 +22,32 @@ class Certificate extends Model
      * @var array
      */
     protected $hidden = [
-        // 'token',
+        'vessel',
     ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['vessel_name'];
+
+    /**
+     * Get the vessel that owns the certificate.
+     */
+    public function vessel()
+    {
+        return $this->belongsTo('App\Vessel');
+    }
+
+     /**
+     * Get the vessel name for this certificate
+     *
+     * @return bool
+     */
+    public function getVesselNameAttribute()
+    {
+        return $this->vessel->name;
+    }
+
 }

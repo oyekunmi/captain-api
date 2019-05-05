@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use App\User;
 
 $router->get('/', function () use ($router) {
-    return $router->app->version();
+    return view('web');
 });
 
 $router->post('/api/auth', function(Request $request){

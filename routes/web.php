@@ -10,15 +10,43 @@ $router->get('/', function () use ($router) {
 });
 
 $router->post('/api/auth', function(Request $request){
+    $key = null;
     if ($request->header('Authorization')) {
-        $key = explode(' ',$request->header('Authorization'));
-        $user = User::where('token', $key[1])->first();
-    
-        if(!empty($user)){
-            return "Bearer ".$user->token;
-        }
+        $key = explode(' ',$request->header('Authorization'))[1];
+    }else if($request->input('token')){
+        $key = $request->input('token');
+    }else{
+        return response()->json([
+            'errors' => ['passcode' => 'is invalid']
+        ],401);
     }
-    return response()->json(['status' => 'fail'],401);
+
+    $user = User::where('token', $key)->first();
+    
+    if(!empty($user)){
+        return "Bearer ".$user->token;
+    }else{
+        return response()->json([
+            'errors' => ['passcode' => 'is invalid']
+        ],401);
+    }
+    
+});
+
+$router->post('/api/v1/auth', function(Request $request){
+    $key = $request->input('token');
+    if($key){
+        $user = User::where('token', $key)->first();
+    
+        if(!empty($user))
+            return response()->json([
+                'user'=> $user
+            ]);
+    }
+    return response()->json([
+        'errors' => ['passcode' => 'is invalid']
+    ],401);
+
 });
 
 $router->group(['prefix' => 'api/', 'middleware' => 'auth'], function () use ($router) {

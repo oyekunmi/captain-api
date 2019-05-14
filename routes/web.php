@@ -33,6 +33,7 @@ $router->post('/api/auth', function(Request $request){
     
 });
 
+
 $router->post('/api/v1/auth', function(Request $request){
     $key = $request->input('token');
     if($key){
@@ -49,10 +50,18 @@ $router->post('/api/v1/auth', function(Request $request){
 
 });
 
-$router->group(['prefix' => 'api/', 'middleware' => 'auth'], function () use ($router) {
+$router->group(['prefix' => 'api/v1/', 'middleware' => 'auth'], function () use ($router) {
     $router->get('user', function(Request $request){
-        return Auth::user();
+        return response()->json([
+            'user'=> Auth::user()
+        ]);
     });
+});
+
+
+
+$router->group(['prefix' => 'api/', 'middleware' => 'auth'], function () use ($router) {
+    $router->get('user', function(Request $request){ return Auth::user(); });
     $router->get('vessels/{id}/certificates/{state}/state', 'CertificateController@byVesselAndState');
     $router->get('vessels/{id}/certificates', 'CertificateController@byVessel');
     $router->get('certificates/{state}/state', 'CertificateController@state');

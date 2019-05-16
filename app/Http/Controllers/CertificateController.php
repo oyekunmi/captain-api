@@ -30,6 +30,28 @@ class CertificateController extends Controller
     }
 
     /**
+     * Store a certificate attached to a vessel
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function store(Request $request, $id)
+    {
+        $c = new Certificate;
+        $c->vessel_id = $id;
+        $c->name = $request->name;
+        $c->description = $request->description;
+        $c->group = $request->group;
+        $c->issue = $request->issue;
+        $c->expiry = $request->expiry;
+        $c->renewals = $request->renewals;
+        $c->save();
+        return response()->json([
+            'certificate'=> $c
+        ]);
+    }
+
+    /**
      * Retrieve the certificate for the given ID.
      *
      * @param  int  $id
@@ -43,7 +65,7 @@ class CertificateController extends Controller
     /**
      * Retrieve the certificate for the given ID.
      *
-     * @param  int  $id
+     * @param  String  $sate
      * @return Response
      */
     public function state(Request $request, String  $state)

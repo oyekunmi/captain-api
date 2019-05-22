@@ -37,18 +37,31 @@ class CertificateController extends Controller
      */
     public function store(Request $request, $id)
     {
-        $c = new Certificate;
-        $c->vessel_id = $id;
-        $c->name = $request->name;
-        $c->description = $request->description;
-        $c->group = $request->group;
-        $c->issue = $request->issue;
-        $c->expiry = $request->expiry;
-        $c->renewals = $request->renewals;
-        $c->save();
-        return response()->json([
-            'certificate'=> $c
-        ]);
+
+        if(!$id || $id == "undefined"){
+            return response()->json([
+                'errors' => ['vessel' => 'No vessel attached to this certificate']
+            ],400);
+        }
+        try{
+            $c = new Certificate;
+            $c->vessel_id = $id;
+            $c->name = $request->name;
+            $c->description = $request->description;
+            $c->group = $request->group;
+            $c->issue = $request->issue;
+            $c->expiry = $request->expiry;
+            $c->renewals = $request->renewals;
+            $c->save();
+            return response()->json([
+                'certificate'=> $c
+            ]);
+        }catch(Exception $ex){
+            return response()->json([
+                'errors' => ['general' => 'An error occured']
+            ],400);
+        }
+       
     }
 
     /**

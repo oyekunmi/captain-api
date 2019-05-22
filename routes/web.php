@@ -70,6 +70,8 @@ $router->group(['prefix' => 'api/', 'middleware' => 'auth'], function () use ($r
     $router->get('certificates', 'CertificateController@index');
     $router->get('vessels/{id}', 'VesselController@show');
     $router->get('vessels', 'VesselController@index');
+    $router->post('vessels', 'VesselController@store');
+
 });
 
 // $router->get('certificates', function(Request $request){

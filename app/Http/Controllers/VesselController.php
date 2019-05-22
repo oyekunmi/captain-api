@@ -28,4 +28,17 @@ class VesselController extends Controller{
       return Vessel::findOrFail($id);
   }
 
+  /**
+   * Save a vessel
+   *
+   * @return Response
+   */
+  public function store(Request $request){
+    $vessel = new Vessel;
+    $vessel->name = $request->name;
+    $vessel->description = $request->description;
+    $vessel->save();
+    return $vessel;
+  }
+
 }

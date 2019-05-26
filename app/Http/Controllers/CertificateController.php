@@ -109,4 +109,23 @@ class CertificateController extends Controller
     }
 
     
+    /**
+     * Delete the certificate for the given vessel.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function delete(Request $request, Int $vessel_id, Int $id)
+    {
+        $cert = Certificate::find($id);
+        if($cert && $cert->vessel_id == $vessel_id){
+            $cert->delete();
+            return $cert;
+        }
+        return response()->json([
+            'errors' => ['general' => 'Certificate does not exist']
+        ],400);
+    }
+
+    
 }

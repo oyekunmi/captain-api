@@ -65,6 +65,7 @@ $router->group(['prefix' => 'api/', 'middleware' => 'auth'], function () use ($r
     $router->get('vessels/{id}/certificates/{state}/state', 'CertificateController@byVesselAndState');
     $router->get('vessels/{id}/certificates', 'CertificateController@byVessel');
     $router->post('vessels/{id}/certificates', 'CertificateController@store');
+    $router->delete('vessels/{vessel_id}/certificates/{id}', 'CertificateController@delete');
     $router->get('certificates/{state}/state', 'CertificateController@state');
     $router->get('certificates/{id}', 'CertificateController@show');
     $router->get('certificates', 'CertificateController@index');

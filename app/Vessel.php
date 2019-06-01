@@ -22,9 +22,15 @@ class Vessel extends Model
      * @var array
      */
     protected $hidden = [
-        // 'token',
+        'certificates',
     ];
 
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['certificates_count'];
 
     /**
      * Get the certificates for the vessel.
@@ -32,5 +38,9 @@ class Vessel extends Model
     public function certificates()
     {
         return $this->hasMany('App\Certificate');
+    }
+
+    public function getCertificatesCountAttribute(){
+        return $this->certificates->count();
     }
 }

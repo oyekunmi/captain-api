@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Certificate extends Model
 {
@@ -43,11 +44,21 @@ class Certificate extends Model
      /**
      * Get the vessel name for this certificate
      *
-     * @return bool
+     * @return string
      */
-    public function getVesselNameAttribute()
+    public function getVesselNameAttribute(): string
     {
         return $this->vessel->name;
+    }
+
+    /**
+     * Get the days to expiry
+     *
+     * @return bool
+     */
+    public function getExpiringDaysAttribute()
+    {
+        return Carbon::today()->diffInDays($this->expiry, false);
     }
 
 }

@@ -5,10 +5,13 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\CertificateExpiring;
+use App\Certificate;
 
 class UpdateStateCommand extends Command{
 
-    private $tableName = 'certificates';
+    private $expiring = [];
 
    /**
      * The console command name.
@@ -42,18 +45,19 @@ class UpdateStateCommand extends Command{
     public function handle()
     {
 
-      DB::table($this->tableName)
-        // ->whereIn('state', ['HEALTHY', 'EXPIRING'])
-        ->chunkById(10, function($items){
+      Certificate::chunkById(10, function($items){
           foreach($items as $item){
             if($this->isValidItem($item)) 
               $this->process($item);
           }
         });
+
+      $this->sendExpiringMail();
+
     }
 
 
-    private function process($item){
+    private function process(Certificate $item){
       
       $item = $this->tweakPermanentItems($item);
 
@@ -62,6 +66,7 @@ class UpdateStateCommand extends Command{
       $monthsToExpiry = Carbon::today()->diffInMonths($expiry, false);
 
       if($monthsToExpiry >= 0 && $monthsToExpiry < 3){
+        $this->expiring[] = $item;
         $this->moveToState($item, 'EXPIRING');
       }
       else if( $monthsToExpiry > 2 ){
@@ -71,6 +76,10 @@ class UpdateStateCommand extends Command{
         $this->moveToState($item, 'EXPIRED');
       }
 
+    }
+
+    private function sendExpiringMail(){
+      Mail::to('oyekunmi@gmail.com')->send(new CertificateExpiring($this->expiring));
     }
 
     private function moveToState($item, String $nextState){

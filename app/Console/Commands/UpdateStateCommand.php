@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\CertificateExpiring;
+use App\Mail\CertificatesExpiring;
 use App\Certificate;
 
 class UpdateStateCommand extends Command{
@@ -79,7 +79,7 @@ class UpdateStateCommand extends Command{
     }
 
     private function sendExpiringMail(){
-      Mail::to('oyekunmi@gmail.com')->send(new CertificateExpiring($this->expiring));
+      Mail::to(['oyekunmi@gmail.com','captmodey@yahoo.com','captainmodey@gmail.com'])->send(new CertificatesExpiring($this->expiring));
     }
 
     private function moveToState($item, String $nextState){

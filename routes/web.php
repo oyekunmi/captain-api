@@ -58,8 +58,6 @@ $router->group(['prefix' => 'api/v1/', 'middleware' => 'auth'], function () use 
     });
 });
 
-
-
 $router->group(['prefix' => 'api/', 'middleware' => 'auth'], function () use ($router) {
     $router->get('user', function(Request $request){ return Auth::user(); });
     $router->get('vessels/{id}/certificates/{state}/state', 'CertificateController@byVesselAndState');

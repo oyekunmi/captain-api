@@ -44,16 +44,13 @@ class UpdateStateCommand extends Command{
      */
     public function handle()
     {
-
       Certificate::chunkById(10, function($items){
           foreach($items as $item){
             if($this->isValidItem($item)) 
               $this->process($item);
           }
         });
-
       $this->sendExpiringMail();
-
     }
 
 
@@ -84,10 +81,7 @@ class UpdateStateCommand extends Command{
 
     private function moveToState($item, String $nextState){
       if($item->state == $nextState) return ;
-
-      DB::table($this->tableName)
-        ->where('id', $item->id)
-        ->update(['state'=> $nextState]);
+      Certificate::find( $item->id)->update(['state'=> $nextState]);
     }
 
     private function isValidItem($item){
@@ -99,9 +93,7 @@ class UpdateStateCommand extends Command{
     private function tweakPermanentItems($item){
       if($item->renewals != 'permanent')
         return $item;
-
       $item->expiry = Carbon::today()->addYears(5)->toDateString();
-
       return $item;
     }
 

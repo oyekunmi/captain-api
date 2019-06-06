@@ -14,7 +14,7 @@ class Certificate extends Model
      * @var array
      */
     protected $fillable = [
-        // 'name', 'email',
+        'state'
     ];
 
     /**

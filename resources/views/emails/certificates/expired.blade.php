@@ -6,12 +6,12 @@
       <table style="width: 100%;border-collapse: collapse;border: 1px solid black;" width="100%" cellspacing="0" cellpadding="0">
         
         <tr>
-          <th style="border: 1px solid black;height: 50px;background-color: #4CAF50;color: white;padding: 15px;text-align: left;"> Vessel Name </th>
-          <th style="border: 1px solid black;height: 50px;background-color: #4CAF50;color: white;padding: 15px;text-align: left;"> Certificate Name </th>
-          <th style="border: 1px solid black;height: 50px;background-color: #4CAF50;color: white;padding: 15px;text-align: left;"> Group </th>
-          <th style="border: 1px solid black;height: 50px;background-color: #4CAF50;color: white;padding: 15px;text-align: left;"> Issue </th>
-          <th style="border: 1px solid black;height: 50px;background-color: #4CAF50;color: white;padding: 15px;text-align: left;"> Expiry </th>
-          <th style="border: 1px solid black;height: 50px;background-color: #4CAF50;color: white;padding: 15px;text-align: left;"> Days </th>
+          <th style="border: 1px solid black;height: 50px;background-color: #af4c4c;color: white;padding: 15px;text-align: left;"> Vessel Name </th>
+          <th style="border: 1px solid black;height: 50px;background-color: #af4c4c;color: white;padding: 15px;text-align: left;"> Certificate Name </th>
+          <th style="border: 1px solid black;height: 50px;background-color: #af4c4c;color: white;padding: 15px;text-align: left;"> Group </th>
+          <th style="border: 1px solid black;height: 50px;background-color: #af4c4c;color: white;padding: 15px;text-align: left;"> Issue </th>
+          <th style="border: 1px solid black;height: 50px;background-color: #af4c4c;color: white;padding: 15px;text-align: left;"> Expiry </th>
+          <th style="border: 1px solid black;height: 50px;background-color: #af4c4c;color: white;padding: 15px;text-align: left;"> Days </th>
         </tr>
 
         <tbody>
